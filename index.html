@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121A47">
+<title>Vijay Super Mall · App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Hind+Vadodara:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="stage">
+  <aside class="stage-side">
+    <div class="side-brand">
+      <span class="side-logo" id="sideLogo"></span>
+      <span class="side-brand-copy">
+        <strong>VIJAY</strong>
+        <small>SUPER MALL</small>
+      </span>
+    </div>
+
+    <h1 class="side-title">One mall.<br><em>Every flow, live.</em></h1>
+    <p class="side-lede">The full customer and owner experience from the PRD and Figma handoff — connected around coins, coupons and live order tracking.</p>
+
+    <div class="side-tabs" role="tablist" aria-label="App switch">
+      <button class="side-tab" data-nav="#/home" data-app-tab="customer">Customer app</button>
+      <button class="side-tab" data-nav="#/admin" data-app-tab="admin">Admin panel</button>
+    </div>
+
+    <div class="journey-card">
+      <div class="journey-head">
+        <span id="journeyTitle">Customer journey</span>
+        <span class="journey-live"><i></i> live</span>
+      </div>
+      <ol class="journey-list" id="journeyList"></ol>
+      <div class="journey-now"><span>Now viewing</span><strong id="journeyNow">Splash</strong></div>
+    </div>
+
+    <div class="side-foot">
+      <span>Free home delivery</span><i>·</i><span>Coins on every order</span><i>·</i><span>EN + ગુજરાતી</span>
+    </div>
+    <button class="side-reset" id="resetDemo" type="button">Reset demo data</button>
+  </aside>
+
+  <main class="device-wrap">
+    <div class="device">
+      <div class="app" id="app" aria-live="polite"></div>
+    </div>
+    <p class="device-caption"><span></span> Vijay Super Mall · interactive product prototype</p>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
