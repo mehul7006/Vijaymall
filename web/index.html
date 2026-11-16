@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+    The path provided below has to start with a "/" and is a valid URL.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Online store">
+
+  <!-- iOS meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Store">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Store</title>
+  <link rel="manifest" href="manifest.json">
+  <!-- Paint the cached store name/logo before Flutter boots (no flash of a
+       wrong name). Reads the same key the app writes (store.profile.v1). -->
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('store.profile.v1');
+        if (!raw) return;
+        var c = JSON.parse(raw), p = c && c.payload;
+        if (!p || !p.shopName) return;
+        document.title = p.shopName;
+        var m = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+        if (m) m.setAttribute('content', p.shopName);
+        var d = document.querySelector('meta[name="description"]');
+        if (d && p.promise) d.setAttribute('content', p.promise);
+        if (c.logo && c.logo.b64) {
+          var href = 'data:image/jpeg;base64,' + c.logo.b64;
+          ['icon', 'apple-touch-icon'].forEach(function (rel) {
+            var l = document.createElement('link');
+            l.rel = rel; l.href = href;
+            document.head.appendChild(l);
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <!-- Razorpay Checkout (online orders): only the public key id is used. -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vijay Super Mall – POS counter</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+Gujarati:wght@400;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:Inter,'Noto Sans Gujarati',system-ui,sans-serif;font-size:16px;color:#16201C;background:#F6F5F1}
+a{color:#1F6B4A}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0}
+:focus-visible{outline:3px solid #F2A33A;outline-offset:2px}
+.skip{position:absolute;left:-9999px;top:8px;background:#fff;color:#16201C;padding:12px 16px;border-radius:8px;z-index:10;font-weight:600}
+.skip:focus{left:8px}
+.card{background:#fff;border:1px solid #E2E0D8;border-radius:14px;box-sizing:border-box}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:12px;font:600 16px Inter,sans-serif;border:1.5px solid #C9C6BB;background:#fff;color:#16201C;cursor:pointer;text-decoration:none;box-sizing:border-box}
+.btn:hover{background:#F0EFE9}
+.btn.pri{background:#1F6B4A;border-color:#1F6B4A;color:#fff}
+.btn.pri:hover{background:#17533A}
+.btn.on{background:#16201C;border-color:#16201C;color:#fff}
+.btn:disabled{background:#E2E0D8;border-color:#E2E0D8;color:#55625B;cursor:not-allowed}
+.btn.sm{min-height:44px;padding:0 14px;font-size:15px}
+.tab{min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #C9C6BB;background:#fff;font:500 15px Inter,sans-serif;color:#16201C;cursor:pointer}
+.tab.on{background:#16201C;border-color:#16201C;color:#fff}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px;border-radius:14px;border:1.5px solid #E2E0D8;background:#fff;cursor:pointer;text-align:left;font-family:inherit;color:#16201C;min-height:120px;box-sizing:border-box;font-size:16px}
+.tile:hover{border-color:#1F6B4A;box-shadow:0 0 0 3px #CFE5D8}
+.input{min-height:48px;padding:0 14px;border-radius:12px;border:1.5px solid #C9C6BB;font:400 16px Inter,sans-serif;background:#fff;color:#16201C;box-sizing:border-box;width:100%}
+.qty{width:44px;height:44px;border-radius:10px;border:1.5px solid #C9C6BB;background:#fff;font:600 20px Inter,sans-serif;cursor:pointer;color:#16201C}
+.qty:hover{background:#F0EFE9}
+.kv{display:flex;justify-content:space-between;gap:12px}
+.muted{color:#55625B}
+.lbl{font-size:14px;font-weight:600;display:flex;flex-direction:column;gap:6px}
+</style>
+</helmet>
+<a class="skip" href="#scan">Skip to scan field</a>
+<div style="display: flex; flex-direction: column; min-height: 100vh; background: #F6F5F1">
+  <header style="background: #12281F; color: #fff; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+      <a href="Main.dc.html" class="btn sm" style="background: transparent; color: #fff; border-color: #4A6B5B">← Console</a>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div aria-hidden="true" style="width: 36px; height: 36px; border-radius: 9px; background: #F2A33A; color: #2B1B00; display: flex; align-items: center; justify-content: center; font: 700 17px 'Space Grotesk', sans-serif">V</div>
+        <b style="font: 600 18px 'Space Grotesk', sans-serif">POS counter</b>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+      <span style="display: inline-flex; align-items: center; gap: 8px; background: #1D3F31; border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; background: #5FD39B"></span>Shift open · Counter 1 · since 10:00 am · float ₹2,000</span>
+      <a href="Shift.dc.html" class="btn sm" style="background: transparent; color: #fff; border-color: #4A6B5B">Close shift</a>
+    </div>
+  </header>
+
+  <main style="flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 20px; padding: 20px 24px 32px; align-items: flex-start; box-sizing: border-box">
+    <section aria-label="Find products" style="flex: 3 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+        <label for="scan" style="position: absolute; left: -9999px">Scan barcode or type a product name</label>
+        <input id="scan" class="input" type="search" autofocus="true" placeholder="Scan barcode or type a name, then press Enter" value="{{q}}" onChange="{{setQ}}" onKeyDown="{{onKey}}" style="flex: 1 1 300px; min-height: 56px; font-size: 18px; border-color: #1F6B4A; border-width: 2px">
+        <div role="group" aria-label="Product name language" style="display: flex; gap: 6px">
+          <button type="button" class="tab {{enOn}}" aria-pressed="{{enP}}" onClick="{{setEn}}">English</button>
+          <button type="button" class="tab {{guOn}}" aria-pressed="{{guP}}" onClick="{{setGu}}">ગુજરાતી</button>
+        </div>
+      </div>
+      <sc-if value="{{scanMsg}}" hint-placeholder-val="{{ false }}"><div role="status" style="background: #FFF1D6; color: #7A4800; border-radius: 10px; padding: 10px 14px; font-weight: 600">{{scanMsg}}</div></sc-if>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px">
+        <sc-for list="{{tiles}}" as="p" hint-placeholder-count="10">
+          <button type="button" class="tile" onClick="{{p.add}}" aria-label="Add {{p.name}}, {{p.priceText}} {{p.per}}">
+            <span style="font-weight: 600; line-height: 1.3; font-size: 16px">{{p.name}}</span>
+            <span class="muted" style="font-size: 13px">{{p.tag}}</span>
+            <span style="margin-top: auto; font: 700 18px 'Space Grotesk', sans-serif">{{p.priceText}} <span class="muted" style="font: 500 13px Inter, sans-serif">{{p.per}}</span></span>
+          </button>
+        </sc-for>
+      </div>
+      <p class="muted" style="margin: 0; font-size: 14px">Demo: type <b>8901234500011</b> and press Enter to scan rice. Tap Onion to add it by weight.</p>
+    </section>
+
+    <aside class="card" aria-label="Current bill" style="flex: 2 1 400px; min-width: 0; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+      <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display: flex; flex-direction: column; gap: 14px">
+          <div style="background: #E3F0E8; color: #17533A; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+            <b style="font: 600 24px 'Space Grotesk', sans-serif">Paid {{receipt.total}}</b>
+            <span>Bill {{receipt.invoice}} · {{receipt.mode}}</span>
+            <span style="font-size: 22px; font-weight: 700">{{receipt.changeText}}</span>
+          </div>
+          <button type="button" class="btn" style="min-height: 56px">Print receipt (58 mm)</button>
+          <button type="button" class="btn pri" style="min-height: 64px; font-size: 18px" onClick="{{newSale}}">Start next sale</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{billing}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap">
+          <h2 style="font-size: 22px; font-weight: 600">Current bill</h2>
+          <div style="display: flex; gap: 8px">
+            <button type="button" class="btn sm" onClick="{{hold}}" disabled="{{empty}}">Hold</button>
+            <button type="button" class="btn sm" onClick="{{resume}}" disabled="{{noHeld}}">Held ({{heldCount}})</button>
+            <button type="button" class="btn sm" onClick="{{clear}}" disabled="{{empty}}">Clear</button>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label class="lbl">Customer mobile (optional)
+            <input class="input" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit number for coins or credit" value="{{mobile}}" onChange="{{setMobile}}">
+          </label>
+          <sc-if value="{{cust.found}}" hint-placeholder-val="{{ false }}">
+            <div style="background: #E3F0E8; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+              <b>{{cust.name}}</b>
+              <span style="font-size: 14px">{{cust.coins}} coins · credit available {{cust.credit}}</span>
+              <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-weight: 600"><input type="checkbox" style="width: 22px; height: 22px; accent-color: #1F6B4A" checked="{{useCoins}}" onChange="{{toggleCoins}}">Use coins (up to 10% of bill)</label>
+            </div>
+          </sc-if>
+          <sc-if value="{{cust.walkin}}" hint-placeholder-val="{{ false }}"><span class="muted" style="font-size: 14px">New customer. They will earn coins on this bill.</span></sc-if>
+        </div>
+
+        <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><div style="border: 2px dashed #C9C6BB; border-radius: 12px; padding: 32px 16px; text-align: center" class="muted">Scan an item or tap a product to start</div></sc-if>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{lines}}" as="l" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid #EFEDE6">
+              <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><b style="line-height: 1.3">{{l.name}}</b><span class="muted" style="font-size: 13px">{{l.unitText}}</span></div>
+              <button type="button" class="qty" onClick="{{l.dec}}" aria-label="Less {{l.name}}">−</button>
+              <b style="min-width: 62px; text-align: center">{{l.qtyText}}</b>
+              <button type="button" class="qty" onClick="{{l.inc}}" aria-label="More {{l.name}}">+</button>
+              <b style="min-width: 78px; text-align: right">{{l.amount}}</b>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <button type="button" class="btn sm" onClick="{{toggleDisc}}" aria-expanded="{{discOpenStr}}" disabled="{{empty}}">Give a discount</button>
+          <sc-if value="{{discOpen}}" hint-placeholder-val="{{ false }}">
+            <div style="border: 1.5px solid #C9C6BB; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+              <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+                <label class="lbl">Amount (₹)<input class="input" type="number" inputmode="decimal" value="{{dAmt}}" onChange="{{setDAmt}}"></label>
+                <label class="lbl">Reason<input class="input" type="text" placeholder="e.g. damaged pack" value="{{dReason}}" onChange="{{setDReason}}"></label>
+              </div>
+              <label class="lbl">Manager PIN (4–8 digits, asked from cashiers)<input class="input" type="password" inputmode="numeric" maxlength="8" value="{{dPin}}" onChange="{{setDPin}}"></label>
+              <sc-if value="{{dErr}}" hint-placeholder-val="{{ false }}"><div role="alert" style="color: #9B1C12; font-weight: 600">{{dErr}}</div></sc-if>
+              <button type="button" class="btn pri sm" onClick="{{applyDisc}}">Apply discount</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #EFEDE6; padding-top: 14px">
+          <div class="kv"><span class="muted">Subtotal</span><span>{{t.sub}}</span></div>
+          <sc-if value="{{t.hasCoin}}" hint-placeholder-val="{{ false }}"><div class="kv"><span class="muted">Coins</span><span>− {{t.coin}}</span></div></sc-if>
+          <sc-if value="{{t.hasMan}}" hint-placeholder-val="{{ false }}"><div class="kv"><span class="muted">Discount ({{t.reason}})</span><span>− {{t.man}}</span></div></sc-if>
+          <div class="kv"><span class="muted">GST included (CGST {{t.cgst}} + SGST {{t.sgst}})</span><span>{{t.tax}}</span></div>
+          <div class="kv"><span class="muted">Round-off</span><span>{{t.round}}</span></div>
+          <div class="kv" style="align-items: baseline; border-top: 1px solid #EFEDE6; padding-top: 10px"><b style="font-size: 18px">To pay</b><b style="font: 700 34px 'Space Grotesk', sans-serif">{{t.total}}</b></div>
+        </div>
+
+        <div role="group" aria-label="Payment method" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{pays}}" as="m" hint-placeholder-count="4">
+            <button type="button" class="btn {{m.cls}}" style="padding: 0 6px" aria-pressed="{{m.on}}" onClick="{{m.pick}}">{{m.label}}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{isCash}}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <label class="lbl">Cash received (₹)<input class="input" type="number" inputmode="decimal" value="{{tendered}}" onChange="{{setTendered}}" style="font-size: 22px; min-height: 56px"></label>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap">
+              <sc-for list="{{notes}}" as="n" hint-placeholder-count="4"><button type="button" class="btn sm" style="flex: 1 1 70px" onClick="{{n.pick}}">{{n.label}}</button></sc-for>
+            </div>
+            <b style="font-size: 18px">{{changeLine}}</b>
+          </div>
+        </sc-if>
+        <sc-if value="{{isUpi}}" hint-placeholder-val="{{ false }}"><div style="border: 1.5px dashed #C9C6BB; border-radius: 12px; padding: 20px; text-align: center" class="muted">UPI QR for {{t.total}} shows here for the customer to scan.</div></sc-if>
+        <sc-if value="{{isCredit}}" hint-placeholder-val="{{ false }}"><div style="border-radius: 12px; padding: 14px; font-weight: 600; background: {{creditBg}}">{{creditMsg}}</div></sc-if>
+
+        <button type="button" class="btn pri" style="min-height: 68px; font-size: 20px" disabled="{{noCharge}}" onClick="{{charge}}">Charge {{t.total}}</button>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <button type="button" class="btn sm" style="flex: 1 1 120px">Find old bill / Return</button>
+          <button type="button" class="btn sm" style="flex: 1 1 120px">Take credit repayment</button>
+        </div>
+      </sc-if>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":940}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { q: '', lang: 'en', cart: { p1: 1, p2: 2 }, mobile: '', useCoins: false, pay: 'CASH', tendered: '', discOpen: false, dAmt: '', dReason: '', dPin: '', dErr: '', disc: null, held: [], done: null, scanMsg: '' };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state;
+    var P = [
+      { id: 'p1', en: 'Basmati Rice 5 kg', gu: 'બાસમતી ચોખા 5 કિલો', price: 52000, gst: 5, bc: '8901234500011', w: false },
+      { id: 'p2', en: 'Toor Dal 1 kg', gu: 'તુવેર દાળ 1 કિલો', price: 16500, gst: 5, bc: '8901234500028', w: false },
+      { id: 'p3', en: 'Groundnut Oil 1 L', gu: 'સીંગતેલ 1 લિટર', price: 18500, gst: 5, bc: '8901234500035', w: false },
+      { id: 'p4', en: 'Sugar 1 kg', gu: 'ખાંડ 1 કિલો', price: 4600, gst: 5, bc: '8901234500042', w: false },
+      { id: 'p5', en: 'Turmeric Powder 200 g', gu: 'હળદર પાવડર 200 ગ્રામ', price: 6200, gst: 5, bc: '8901234500059', w: false },
+      { id: 'p6', en: 'Toned Milk 500 ml', gu: 'દૂધ 500 મિલી', price: 2900, gst: 0, bc: '8901234500066', w: false },
+      { id: 'p7', en: 'Wheat Flour 5 kg', gu: 'ઘઉંનો લોટ 5 કિલો', price: 24000, gst: 0, bc: '8901234500073', w: false },
+      { id: 'p8', en: 'Onion', gu: 'ડુંગળી', price: 3800, gst: 0, bc: '', w: true },
+      { id: 'p9', en: 'Potato', gu: 'બટાકા', price: 3200, gst: 0, bc: '', w: true },
+      { id: 'p10', en: 'Tomato', gu: 'ટામેટા', price: 4400, gst: 0, bc: '', w: true }
+    ];
+    var gu = st.lang === 'gu';
+    var nm = function (p) { return gu ? p.gu : p.en; };
+    var money = function (n) { return '₹' + (n / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    var short = function (n) { return '₹' + (n / 100).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+    var step = function (p) { return p.w ? 250 : 1; };
+    var setCart = function (id, q) { var c = Object.assign({}, self.state.cart); if (q <= 0) { delete c[id]; } else { c[id] = q; } self.setState({ cart: c, scanMsg: '', disc: null }); };
+    var addOne = function (p) { var cur = self.state.cart[p.id] || 0; setCart(p.id, cur + (p.w && cur === 0 ? 500 : step(p))); };
+    var q = st.q.trim().toLowerCase();
+    var shown = P.filter(function (p) { return !q || (p.en + ' ' + p.gu + ' ' + p.bc).toLowerCase().indexOf(q) >= 0; });
+
+    var lines = P.filter(function (p) { return st.cart[p.id]; }).map(function (p) {
+      var qty = st.cart[p.id];
+      var amount = p.w ? Math.round(p.price * qty / 1000) : p.price * qty;
+      return { p: p, qty: qty, amount: amount };
+    });
+    var sub = lines.reduce(function (a, l) { return a + l.amount; }, 0);
+    var cust = { found: false, walkin: false };
+    var coinsAvail = 0, creditAvail = 0;
+    if (st.mobile.length === 10) {
+      if (st.mobile === '9876543210') { cust = { found: true, walkin: false, name: 'Ramesh Shah', coins: '240', credit: '₹3,200' }; coinsAvail = 24000; creditAvail = 320000; }
+      else { cust = { found: false, walkin: true }; }
+    }
+    var coinDisc = (st.useCoins && coinsAvail) ? Math.min(coinsAvail, Math.floor(sub * 0.10)) : 0;
+    var man = st.disc ? Math.min(st.disc.amt, sub - coinDisc) : 0;
+    var net = Math.max(0, sub - coinDisc - man);
+    var tax = 0;
+    if (sub > 0) { lines.forEach(function (l) { var nl = l.amount * net / sub; tax += nl - Math.round(nl * 100 / (100 + l.p.gst)); }); }
+    tax = Math.round(tax);
+    var cgst = Math.floor(tax / 2), sgst = tax - cgst;
+    var total = Math.round(net / 100) * 100;
+    var empty = lines.length === 0;
+    var pay = st.pay;
+    var tendered = st.tendered === '' ? total : Math.round(parseFloat(st.tendered || '0') * 100);
+    var change = tendered - total;
+    var creditOk = cust.found && creditAvail >= total;
+    var noCharge = empty || (pay === 'CASH' && change < 0) || (pay === 'CREDIT' && !creditOk);
+    var tiles = shown.map(function (p) { return { name: nm(p), tag: p.w ? 'Sold by weight' : (p.gst === 0 ? 'No GST' : 'GST ' + p.gst + '%'), priceText: short(p.price), per: p.w ? 'per kg' : '', add: function () { addOne(p); } }; });
+
+    return {
+      q: st.q, setQ: function (e) { self.setState({ q: e.target.value }); },
+      onKey: function (e) {
+        if (e.key !== 'Enter') { return; }
+        e.preventDefault();
+        var v = self.state.q.trim().toLowerCase();
+        var hit = P.filter(function (p) { return p.bc && p.bc === v; })[0];
+        if (!hit) { var m = P.filter(function (p) { return (p.en + ' ' + p.gu).toLowerCase().indexOf(v) >= 0; }); if (v && m.length === 1) { hit = m[0]; } }
+        if (hit) { addOne(hit); self.setState({ q: '' }); } else { self.setState({ scanMsg: 'No product found for “' + self.state.q + '”. Check the barcode or search by name.' }); }
+      },
+      scanMsg: st.scanMsg,
+      enOn: gu ? '' : 'on', guOn: gu ? 'on' : '', enP: gu ? 'false' : 'true', guP: gu ? 'true' : 'false',
+      setEn: function () { self.setState({ lang: 'en' }); }, setGu: function () { self.setState({ lang: 'gu' }); },
+      tiles: tiles,
+      billing: !st.done, done: !!st.done, receipt: st.done || {},
+      empty: empty, noHeld: st.held.length === 0, heldCount: st.held.length,
+      hold: function () { var h = self.state.held.concat([self.state.cart]); self.setState({ held: h, cart: {}, disc: null }); },
+      resume: function () { var h = self.state.held.slice(); var c = h.pop(); self.setState({ held: h, cart: c || {} }); },
+      clear: function () { self.setState({ cart: {}, disc: null, useCoins: false }); },
+      mobile: st.mobile, setMobile: function (e) { self.setState({ mobile: e.target.value.replace(/\D/g, '').slice(0, 10), useCoins: false }); },
+      cust: cust, useCoins: st.useCoins, toggleCoins: function (e) { self.setState({ useCoins: e.target.checked }); },
+      lines: lines.map(function (l) {
+        return { name: nm(l.p), unitText: l.p.w ? short(l.p.price) + ' per kg' : short(l.p.price) + ' each', qtyText: l.p.w ? (l.qty / 1000).toFixed(2) + ' kg' : String(l.qty), amount: money(l.amount),
+          inc: function () { setCart(l.p.id, l.qty + step(l.p)); }, dec: function () { setCart(l.p.id, l.qty - step(l.p)); } };
+      }),
+      discOpen: st.discOpen, discOpenStr: st.discOpen ? 'true' : 'false', toggleDisc: function () { self.setState({ discOpen: !self.state.discOpen, dErr: '' }); },
+      dAmt: st.dAmt, dReason: st.dReason, dPin: st.dPin, dErr: st.dErr,
+      setDAmt: function (e) { self.setState({ dAmt: e.target.value }); }, setDReason: function (e) { self.setState({ dReason: e.target.value }); }, setDPin: function (e) { self.setState({ dPin: e.target.value.replace(/\D/g, '').slice(0, 8) }); },
+      applyDisc: function () {
+        var s = self.state; var amt = Math.round(parseFloat(s.dAmt || '0') * 100);
+        if (!(amt > 0)) { self.setState({ dErr: 'Enter a discount amount.' }); return; }
+        if (!s.dReason.trim()) { self.setState({ dErr: 'A reason is needed for every discount.' }); return; }
+        if (s.dPin.length < 4) { self.setState({ dErr: 'Ask a manager to enter their PIN (4–8 digits).' }); return; }
+        self.setState({ disc: { amt: amt, reason: s.dReason.trim() }, discOpen: false, dErr: '', dPin: '' });
+      },
+      t: { sub: money(sub), hasCoin: coinDisc > 0, coin: money(coinDisc), hasMan: man > 0, man: money(man), reason: st.disc ? st.disc.reason : '', tax: money(tax), cgst: money(cgst), sgst: money(sgst), round: (total - net >= 0 ? '+ ' : '− ') + money(Math.abs(total - net)), total: money(total) },
+      pays: [['CASH', 'Cash'], ['UPI', 'UPI'], ['CARD', 'Card'], ['CREDIT', 'Udhar']].map(function (m) { return { label: m[1], cls: pay === m[0] ? 'on' : '', on: pay === m[0] ? 'true' : 'false', pick: function () { self.setState({ pay: m[0] }); } }; }),
+      isCash: pay === 'CASH', isUpi: pay === 'UPI', isCredit: pay === 'CREDIT',
+      tendered: st.tendered === '' ? (total / 100).toString() : st.tendered, setTendered: function (e) { self.setState({ tendered: e.target.value }); },
+      notes: [['Exact', total], ['₹500', 50000], ['₹1,000', 100000], ['₹2,000', 200000]].map(function (n) { return { label: n[0], pick: function () { self.setState({ tendered: (n[1] / 100).toString() }); } }; }),
+      changeLine: change >= 0 ? 'Give change: ' + money(change) : 'Short by ' + money(-change),
+      creditBg: creditOk ? '#E3F0E8' : '#FDE8E6',
+      creditMsg: !cust.found ? 'Enter the customer’s mobile above. Credit needs an approved customer.' : (creditOk ? 'Add ' + money(total) + ' to ' + cust.name + '’s account. Available ' + cust.credit + '.' : 'Over the credit limit. Available ' + cust.credit + '.'),
+      noCharge: noCharge,
+      charge: function () { self.setState({ done: { total: money(total), invoice: 'VSM/2026-27/000043', mode: pay === 'CREDIT' ? 'Udhar (credit)' : pay, changeText: pay === 'CASH' ? 'Give change: ' + money(Math.max(0, change)) : (pay === 'CREDIT' ? 'Added to customer account' : 'Payment confirmed') } }); },
+      newSale: function () { self.setState({ done: null, cart: {}, mobile: '', useCoins: false, disc: null, tendered: '', pay: 'CASH' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

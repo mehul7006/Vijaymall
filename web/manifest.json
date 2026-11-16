@@ -1,0 +1,11 @@
+{
+    "name": "Store",
+    "short_name": "Store",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#F4F5FB",
+    "theme_color": "#D3202B",
+    "description": "Online store",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false
+}

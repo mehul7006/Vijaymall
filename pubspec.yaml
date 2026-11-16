@@ -1,0 +1,56 @@
+name: vijay_super_mall
+description: Vijay Super Mall — customer & admin app (Flutter, one codebase for mobile and web).
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.10
+  provider: ^6.1.2
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
+  web: ^1.1.0
+  qr_flutter: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/landing/
+
+  fonts:
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-400.ttf
+          weight: 400
+        - asset: assets/fonts/PlusJakartaSans-500.ttf
+          weight: 500
+        - asset: assets/fonts/PlusJakartaSans-600.ttf
+          weight: 600
+        - asset: assets/fonts/PlusJakartaSans-700.ttf
+          weight: 700
+        - asset: assets/fonts/PlusJakartaSans-800.ttf
+          weight: 800
+    - family: HindVadodara
+      fonts:
+        - asset: assets/fonts/HindVadodara-400.ttf
+          weight: 400
+        - asset: assets/fonts/HindVadodara-500.ttf
+          weight: 500
+        - asset: assets/fonts/HindVadodara-600.ttf
+          weight: 600
+        - asset: assets/fonts/HindVadodara-700.ttf
+          weight: 700
+    - family: DMSerifDisplay
+      fonts:
+        - asset: assets/fonts/DMSerifDisplay-400.ttf
+          weight: 400
